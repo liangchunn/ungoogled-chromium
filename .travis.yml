@@ -2,7 +2,7 @@ os: osx
 install:
   - brew install ninja
   - brew upgrade coreutils python
-  - pip install pylint
+  - pip3 install pylint
 script:
   - ./developer_utilities/validate_config.py
   - ./developer_utilities/pylint_buildkit.py --hide-fixme
