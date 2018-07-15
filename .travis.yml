@@ -1,6 +1,7 @@
 os: osx
 install:
-  - brew install ninja coreutils python3
+  - brew install ninja
+  - brew upgrade coreutils python
   - pip install pylint
 script:
   - ./developer_utilities/validate_config.py
