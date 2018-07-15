@@ -1,5 +1,4 @@
 os: osx
-language: python
 install:
   - brew install ninja coreutils python3
   - pip install pylint
