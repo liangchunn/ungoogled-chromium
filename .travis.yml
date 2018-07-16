@@ -9,7 +9,7 @@ cache:
     - buildspace
 script:
 - "test -f BUILD_IN_PROGRESS ||./pre-build.sh"
-- "timeout 30 ./ungoogled_packaging/build.sh || true"
+- "gtimeout 450 ./ungoogled_packaging/build.sh || true"
 # deploy:
 #   provider: releases
 #   api_key:
