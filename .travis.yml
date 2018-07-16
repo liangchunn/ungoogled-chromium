@@ -8,7 +8,7 @@ cache:
   directories:
     - buildspace
 script:
-- "test -f BUILD_IN_PROGRESS ||./pre-build.sh"
+- "test -f ./buildspace/tree/BUILD_IN_PROGRESS ||./pre-build.sh"
 - cd buildspace/tree
 - "gtimeout 450 ./ungoogled_packaging/build.sh || true"
 # deploy:
