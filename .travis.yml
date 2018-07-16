@@ -4,24 +4,18 @@ install:
 - brew upgrade coreutils python
 - export PATH="/usr/local/opt/ccache/libexec:$PATH"
 - pip3 install pylint
+cache:
+  directories:
+    - buildspace
 script:
-- "./developer_utilities/validate_config.py"
-- "./developer_utilities/pylint_buildkit.py --hide-fixme"
-- "./developer_utilities/pylint_devutils.py --hide-fixme developer_utilities/"
-- mkdir -p buildspace/downloads
-- "./buildkit-launcher.py genbun macos"
-- "./buildkit-launcher.py getsrc"
-- "./buildkit-launcher.py subdom"
-- "./buildkit-launcher.py genpkg macos"
-- cd buildspace/tree
-- chmod +x ungoogled_packaging/build.sh
-- "./ungoogled_packaging/build.sh"
-deploy:
-  provider: releases
-  api_key:
-    secure: j//gyQ04wmkMwla7KF7ZDZte6HhRXYbaBS8B3DCZZ0wTuj0zVFOVfY+x4Hww0Ermyf+sp1tKT6Q5+eTuzwYd53cdYFRrAXxioZZ8Ksd5qzBCm4ZMsgbTGGE7q+3rb3Ps/sS1KtBDZRIbplczDoR64AkNeQfAZmVsYujPVJCwLKeMBx4wFKpRdyao+pOn8gIXhRUxSiDraHlGhP7iPAHTm3eUjo6YvyvtuFlr40UfBPKOnZi/1XjoOQvAYbsDVKWGT73ohdEAOH9VZ9cVA/8Sm2eDEIDjw/G8ojrrgfDIrfi+9z4wzU2fLIHfzDtDScfFcWggMOQ/kNKBsWbbfqKAghUeRmjApC0cBpZxBnifTtKEjbqHCv5QMDCbtustzABoXfYgQ8PrK1IvqNyGbSZPsEaWh/ynxoMxA2Yv/SK9FO8Q6KysDHpfLfGq/lQs8t6PNt+iA/OryRkGj8kH+Ab1zxM4CwzeS61aYVfxK1vgJ/12VdHmy0bDaCykgLtjSwXd6xr+1niO6PERcrqSHQg7/FQgahKSQpjnT5asTg1lPKGdPoAiJR5QweFdT4IcWp2R5gtMtRgTcCh8FcM3XLvw3rmVKUgtevYdAtpd8Xn+9lrR4eD2Jl5NikXWgf9OiKSrxQp4MJeaRjQ1JtYM68XBTl5RBXqchUlOwBC2rO4R0J8=
-  file_glob: true
-  file: buildspace/*.dmg
-  on:
-    tags: true
-    repo: liangchunn/ungoogled-chromium
+- "test -f BUILD_IN_PROGRESS ||./pre-build.sh"
+- "timeout 1800 ./ungoogled_packaging/build.sh || true"
+# deploy:
+#   provider: releases
+#   api_key:
+#     secure: j//gyQ04wmkMwla7KF7ZDZte6HhRXYbaBS8B3DCZZ0wTuj0zVFOVfY+x4Hww0Ermyf+sp1tKT6Q5+eTuzwYd53cdYFRrAXxioZZ8Ksd5qzBCm4ZMsgbTGGE7q+3rb3Ps/sS1KtBDZRIbplczDoR64AkNeQfAZmVsYujPVJCwLKeMBx4wFKpRdyao+pOn8gIXhRUxSiDraHlGhP7iPAHTm3eUjo6YvyvtuFlr40UfBPKOnZi/1XjoOQvAYbsDVKWGT73ohdEAOH9VZ9cVA/8Sm2eDEIDjw/G8ojrrgfDIrfi+9z4wzU2fLIHfzDtDScfFcWggMOQ/kNKBsWbbfqKAghUeRmjApC0cBpZxBnifTtKEjbqHCv5QMDCbtustzABoXfYgQ8PrK1IvqNyGbSZPsEaWh/ynxoMxA2Yv/SK9FO8Q6KysDHpfLfGq/lQs8t6PNt+iA/OryRkGj8kH+Ab1zxM4CwzeS61aYVfxK1vgJ/12VdHmy0bDaCykgLtjSwXd6xr+1niO6PERcrqSHQg7/FQgahKSQpjnT5asTg1lPKGdPoAiJR5QweFdT4IcWp2R5gtMtRgTcCh8FcM3XLvw3rmVKUgtevYdAtpd8Xn+9lrR4eD2Jl5NikXWgf9OiKSrxQp4MJeaRjQ1JtYM68XBTl5RBXqchUlOwBC2rO4R0J8=
+#   file_glob: true
+#   file: buildspace/*.dmg
+#   on:
+#     tags: true
+#     repo: liangchunn/ungoogled-chromium
